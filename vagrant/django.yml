@@ -1,21 +1,21 @@
 ---
 - name: Collect static
   become: yes
-  become_user: decide
+  become_user: adminexamen
   shell: ~/venv/bin/python manage.py collectstatic --noinput
   args:
-    chdir: /home/decide/decide/decide
+    chdir: /home/adminexamen/decide/decide
 
 - name: Database migration
   become: yes
-  become_user: decide
+  become_user: adminexamen
   shell: ~/venv/bin/python manage.py migrate --noinput
   args:
-    chdir: /home/decide/decide/decide
+    chdir: /home/adminexamen/decide/decide
 
 - name: Admin superuser
   become: yes
-  become_user: decide
-  shell: ~/venv/bin/python manage.py shell -c "from django.contrib.auth.models import User; User.objects.filter(username='admin') or User.objects.create_superuser('admin', 'admin@example.com', 'admin')"
+  become_user: adminexamen
+  shell: ~/venv/bin/python manage.py shell -c "from django.contrib.auth.models import User; User.objects.filter(username='adminexamen') or User.objects.create_superuser('adminexamen', 'admin@example.com', 'admin')"
   args:
-    chdir: /home/decide/decide/decide
+    chdir: /home/adminexamen/decide/decide
