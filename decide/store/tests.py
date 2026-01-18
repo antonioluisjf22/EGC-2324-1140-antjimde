@@ -55,7 +55,7 @@ class StoreTextCase(BaseTestCase):
             random_user = random.choice(users)
             user = self.get_or_create_user(random_user)
             self.login(user=user.username)
-            census = Census(voting_id=v, voter_id=random_user)
+            census = Census(voting_id_2=v, voter_id=random_user)
             census.save()
             data = {
                 "voting": v,
@@ -81,7 +81,7 @@ class StoreTextCase(BaseTestCase):
         VOTING_PK = 345
         CTE_A = 96
         CTE_B = 184
-        census = Census(voting_id=VOTING_PK, voter_id=1)
+        census = Census(voting_id_2=VOTING_PK, voter_id=1)
         census.save()
         self.gen_voting(VOTING_PK)
         data = {
@@ -170,7 +170,7 @@ class StoreTextCase(BaseTestCase):
             "voter": 1,
             "vote": { "a": 30, "b": 55 }
         }
-        census = Census(voting_id=5001, voter_id=1)
+        census = Census(voting_id_2=5001, voter_id=1)
         census.save()
         # not opened
         self.voting.start_date = timezone.now() + datetime.timedelta(days=1)

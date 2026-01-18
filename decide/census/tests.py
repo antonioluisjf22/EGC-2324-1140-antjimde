@@ -20,7 +20,7 @@ class CensusTestCase(BaseTestCase):
 
     def setUp(self):
         super().setUp()
-        self.census = Census(voting_id=1, voter_id=1)
+        self.census = Census(voting_id_2=1, voter_id=1)
         self.census.save()
 
     def tearDown(self):
