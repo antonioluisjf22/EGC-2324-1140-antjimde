@@ -1,0 +1,44 @@
+name: Create Automatic Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    
+    - name: Generate version tag
+      id: tag
+      run: |
+        COMMIT_COUNT=$(git rev-list --count HEAD)
+        VERSION="v1.0.$COMMIT_COUNT"
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+    
+    - name: Create and push tag
+      run: |
+        git config user.email "actions@github.com"
+        git config user.name "GitHub Actions"
+        git tag ${{ steps.tag.outputs.version }}
+        git push origin ${{ steps.tag.outputs.version }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.tag.outputs.version }}
+        release_name: Release ${{ steps.tag.outputs.version }}
+        body: |
+          Automatic release from GitHub Actions
+          Commit: ${{ github.sha }}
+        draft: false
+        prerelease: false

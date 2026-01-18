@@ -1,0 +1,31 @@
+name: Deploy to Render
+
+on:
+  push:
+    branches:
+      - egc_test
+      - main
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Ejecutar tests
+        run: |
+          cd decide
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python manage.py test --keepdb --noinput
+
+      - name: Trigger Render deployment
+        if: success()
+        run: |
+          curl -X POST https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
+
+      - name: Deployment successful
+        run: echo "✅ Despliegue a Render completado exitosamente"

@@ -60,7 +60,7 @@ class VotingTestCase(BaseTestCase):
             u, _ = User.objects.get_or_create(username='testvoter{}'.format(i))
             u.is_active = True
             u.save()
-            c = Census(voter_id=u.id, voting_id=v.id)
+            c = Census(voter_id=u.id, voting_id_2=v.id)
             c.save()
 
     def get_or_create_user(self, pk):
@@ -71,7 +71,7 @@ class VotingTestCase(BaseTestCase):
         return user
 
     def store_votes(self, v):
-        voters = list(Census.objects.filter(voting_id=v.id))
+        voters = list(Census.objects.filter(voting_id_2=v.id))
         voter = voters.pop()
 
         clear = {}
